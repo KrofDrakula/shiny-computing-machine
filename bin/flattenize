@@ -1,0 +1,60 @@
+#!/usr/bin/env node
+
+var fs      = require('fs'),
+    path    = require('path'),
+    program = require('commander'),
+    flatten = require('../src/flatten'),
+    about = `
+        ( ^-^)_旦 CAN HAZ PANCAEKS?
+
+Pipe me some JSON and I'll flatten it for you!`;
+
+program
+  .option('-a, --about', 'Show the about screen')
+  .parse(process.argv);
+
+if (program.about) {
+  console.log(about);
+  endProgram();
+}
+
+// configure and set up listeners for STDIN
+process.stdin.setEncoding('utf8');
+process.stdin.on('readable', onStdInReadable);
+process.stdin.on('end', onStdInEnd);
+
+var json = '';
+
+function onStdInReadable() {
+  let chunk = process.stdin.read();
+  if (chunk !== null)
+    json += chunk;
+}
+
+function onStdInEnd() {
+  processData(json);
+}
+
+function processData(data) {
+  try {
+    
+    let parsed = JSON.parse(data),
+        result = flatten(parsed);
+        
+    console.log(JSON.stringify(result));
+    
+    endProgram();
+    
+  } catch(ex) {
+    endProgram(`Cannot flatten data!\n\n${ex.toString()}`);
+  }
+}
+
+
+function endProgram(error) {
+  if (error) {
+    console.error(error);
+    process.exit(1);
+  }
+  process.exit(0);
+}
