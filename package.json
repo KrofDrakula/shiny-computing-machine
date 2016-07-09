@@ -4,7 +4,7 @@
   "private": true,
   "description": "Code challenge solution",
   "scripts": {
-    "test": "test"
+    "test": "mocha"
   },
   "author": "Klemen Slavic <krof.drakula@gmail.com>",
   "dependencies": {
