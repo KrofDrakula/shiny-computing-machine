@@ -38,7 +38,7 @@ function processData(data) {
     let parsed = JSON.parse(data),
         result = flatten(parsed);
         
-    console.log(JSON.stringify(result));
+    process.stdout.write(JSON.stringify(result));
     
     endProgram();
     
