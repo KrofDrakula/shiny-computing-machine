@@ -40,6 +40,8 @@ Use `--help` or `--about` for command-line usage.
 
 ### Secrecy
 
+![](https://i.imgur.com/OZPQZww.gif)
+
 To encode a message, use the `hush` script:
 
 ```bash
