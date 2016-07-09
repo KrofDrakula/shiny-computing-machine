@@ -4,7 +4,7 @@ This repo contains the solutions to the code challenges.
 
 ## Usage
 
-Both solutions are presented as JS functions and CLI commands.
+Both solutions are presented as JS functions and CLI commands. Should work with any recent node version (6.x).
 
 After checking out, install the dependencies:
 
