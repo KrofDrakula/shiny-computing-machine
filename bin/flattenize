@@ -4,26 +4,16 @@ var fs      = require('fs'),
     path    = require('path'),
     program = require('commander'),
     flatten = require('../src/flatten'),
-    about = `
-  __________________
- /                  \\
-|   PANCAEK FOR U!   |
- \\_____ ____________/
-       ˇ
-    ( ^-^)_旦
+    about = `  __________________
+   /                  \\
+  |   PANCAEK FOR U!   |
+   \\_____ ____________/
+         ˇ
+      ( ^-^)_旦
+  
+  Pipe me some JSON, sit back, relax, and I'll flatten it for you!`;
 
-Pipe me some JSON, sit back, relax, and I'll flatten it for you!
-
-Use --help for usage info.`;
-
-program
-  .option('-a, --about', 'Show the about screen')
-  .parse(process.argv);
-
-if (program.about) {
-  console.log(about);
-  endProgram();
-}
+program.description(about).parse(process.argv);
 
 // configure and set up listeners for STDIN
 process.stdin.setEncoding('utf8');
