@@ -1,10 +1,13 @@
 # Code Challenge Solutions
 
-This repo contains the solutions to the code challenges.
+This repo contains the solutions to the code challenge presented
+by Resource Guru. The _"cryptographic"_ puzzle source is in
+[this Gist](https://gist.github.com/kmckelvin/41a4a69e397b510274373aa241698561).
 
 ## Usage
 
-Both solutions are presented as JS functions and CLI commands. Should work with any recent node version (6.x).
+Both solutions are presented as JS functions and CLI commands.
+Should work with any recent node version (6.x).
 
 After checking out, install the dependencies:
 
