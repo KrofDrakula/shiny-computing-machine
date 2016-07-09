@@ -63,3 +63,13 @@ cat encodedMessage.txt | bin/hush --decode
 # optional: output to a file
 cat encodedMessage.txt | bin/unhush -d > decodedMessage.txt
 ```
+
+### BONUS SHOT
+
+![](http://scoopempire.com/wp-content/uploads/2016/02/tumblr_ndndzohztZ1ru8wu1o1_400-1.gif)
+
+Try this:
+
+```bash
+cat sample/cry-for-help.txt | bin/hush | bin/hush -d
+```
