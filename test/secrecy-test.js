@@ -9,6 +9,11 @@ describe('@secrecy', () => {
       expect(secrecy.tokenizePlaintext('')).to.eql([]);
     });
     
+    it('should tokenize a single letter', () => {
+      let result = secrecy.tokenizePlaintext('a');
+      expect(result.length).to.equal(1);
+    });
+    
     it('should return a single token per word', () => {
       let result = secrecy.tokenizePlaintext('HELLO WORLD');
       expect(result[0].type).to.equal(secrecy.WORD);
@@ -124,6 +129,92 @@ describe('@secrecy', () => {
     
     it('should eliminate invalid characters', () => {
       expect(secrecy.deobfuscate('%%-.c4$')).to.equal('-.---....');
+    });
+    
+  });
+  
+  describe('#tokenizeCipher', () => {
+    
+    it('should return an empty array for an empty cipher', () => {
+      expect(secrecy.tokenizeCipher('')).to.eql([]);
+    });
+    
+    it('should correctly tokenize a single character', () => {
+      let result = secrecy.tokenizeCipher('.');
+      expect(result.length).to.equal(1);
+      expect(result[0].type).to.equal(secrecy.MORSE_CODEPOINT);
+      expect(result[0].value).to.equal('.');
+    });
+    
+    it('should correctly tokenize a multicharacter word', () => {
+      let result = secrecy.tokenizeCipher('.-|-...'),
+          codePoints = result.map(item => item.value);
+      expect(codePoints).to.eql(['.-', '|','-...']);
+    });
+    
+    it('should correctly tokenize a multiword cipher', () => {
+      let result = secrecy.tokenizeCipher('.-|-.../-.-.|-..'),
+          codePoints = result.map(item => item.value);
+      expect(codePoints).to.eql([
+        '.-',
+        '|',
+        '-...',
+        '/',
+        '-.-.',
+        '|',
+        '-..'
+      ]);
+    });
+    
+    it('should ignore all non-cipher characters', () => {
+      let result = secrecy.tokenizeCipher('.~-|-#.@.$.'),
+          codePoints = result.map(item => item.value);
+      expect(codePoints).to.eql(['.-', '|', '-...']);
+    });
+    
+  });
+  
+  describe('#reconstructText', () => {
+    
+    it('should return empty text for empty token list', () => {
+      expect(secrecy.reconstructText([])).to.eql('');
+    });
+    
+    it('should return a single character for a single code point', () => {
+      let tokens = [{ type: secrecy.MORSE_CODEPOINT, value: '.' }];
+      expect(secrecy.reconstructText(tokens)).to.equal('E');
+    });
+    
+    it('should reconstruct multicharacter words', () => {
+      let tokens = [
+            { type: secrecy.MORSE_CODEPOINT, value: '.-' },
+            { type: secrecy.MORSE_CHARACTER_SEPARATOR, value: '|' },
+            { type: secrecy.MORSE_CODEPOINT, value: '-...' }
+          ];
+      
+      expect(secrecy.reconstructText(tokens)).to.equal('AB');
+    });
+    
+    it('should reconstruct words', () => {
+      let tokens = [
+            { type: secrecy.MORSE_CODEPOINT, value: '.-' },
+            { type: secrecy.MORSE_WORD_SEPARATOR, value: '/' },
+            { type: secrecy.MORSE_CODEPOINT, value: '-...' }
+          ];
+      
+      expect(secrecy.reconstructText(tokens)).to.equal('A B');
+    });
+    
+    it('should decode punctuation with words', () => {
+      let tokens = [
+            { type: secrecy.MORSE_CODEPOINT, value: '.-' },
+            { type: secrecy.MORSE_WORD_SEPARATOR, value: '/' },
+            { type: secrecy.MORSE_CODEPOINT, value: '.-.-.-' },
+            { type: secrecy.MORSE_WORD_SEPARATOR, value: '/' },
+            { type: secrecy.MORSE_CODEPOINT, value: '-...' }
+          ];
+      
+      expect(secrecy.reconstructText(tokens)).to.equal('A. B');
     });
     
   });

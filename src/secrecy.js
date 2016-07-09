@@ -1,12 +1,16 @@
-var dictionary          = require('./dictionary'),
-    WORD                = Symbol('WORD'),
-    PUNCTUATION         = Symbol('PUNCTUATION'),
-    CHARACTER_SEPARATOR = '|',
-    WORD_SEPARATOR      = '/',
-    DOTS_MATCHER        = /\.+/g,
-    DASHES_MATCHER      = /-+/g,
-    NUMBER_MATCHER      = /[1-9]/g,
-    LETTER_MATCHER      = /[a-z]/gi;
+var dictionary                = require('./dictionary'),
+    WORD                      = Symbol('WORD'),
+    PUNCTUATION               = Symbol('PUNCTUATION'),
+    MORSE_CODEPOINT           = Symbol('MORSE_CODEPOINT'),
+    MORSE_CHARACTER_SEPARATOR = Symbol('MORSE_CHARACTER_SEPARATOR'),
+    MORSE_WORD_SEPARATOR      = Symbol('MORSE_WORD_SEPARATOR'),
+    CHARACTER_SEPARATOR       = '|',
+    WORD_SEPARATOR            = '/',
+    DOTS_MATCHER              = /\.+/g,
+    DASHES_MATCHER            = /-+/g,
+    NUMBER_MATCHER            = /[1-6]/g,        // the largest Morse code point is 6 characters long
+    LETTER_MATCHER            = /[a-f]/gi,       // same here
+    CODEPOINT_TESTER          = /^[1-6a-f.-]$/i;
 
 
 
@@ -31,7 +35,6 @@ function encode(text, useObfuscation = false) {
 
 // takes a single line's text and tokenizes it for the encoder
 function tokenizePlaintext(text) {
-  text = text.toUpperCase();
   let tokens = [], index = 0;
   
   while(index < text.length) {
@@ -125,8 +128,47 @@ function decode(cipherText) {
   
 }
 
-function tokenizeCipher(cipher) {
+function tokenizeCipher(cipher, wordSeparator = WORD_SEPARATOR, charSeparator = CHARACTER_SEPARATOR) {
+  let tokens = [], index = 0, codePoint = '';
   
+  while(index < cipher.length) {
+    let char = cipher[index];
+    
+    if (isCodePointPart(char)) {
+      while(isCodePointPart(char)) {
+        codePoint += deobfuscate(char);
+        char = cipher[++index];
+      }
+      continue;
+    }
+    
+    if (char == charSeparator) {
+      commitCodePoint();
+      tokens.push({ type: MORSE_CHARACTER_SEPARATOR, value: charSeparator });
+      index++;
+      continue;
+    }
+    
+    if (char == wordSeparator) {
+      commitCodePoint();
+      tokens.push({ type: MORSE_WORD_SEPARATOR, value: wordSeparator });
+      index++;
+      continue;
+    }
+    
+    // ignore all non-cipher characters
+    index++;
+  }
+  
+  commitCodePoint();
+  
+  return tokens;
+  
+  function commitCodePoint() {
+    if (codePoint)
+      tokens.push({ type: MORSE_CODEPOINT, value: codePoint });
+    codePoint = '';
+  }
 }
 
 // deobfuscates a single Morse code point
@@ -146,8 +188,33 @@ function deobfuscate(morseChar) {
   }
 }
 
+function decodeCodePoint(codePoint) {
+  return dictionary.reverseMap.has(codePoint) ? dictionary.reverseMap.get(codePoint) : '';
+}
+
 function reconstructText(tokens) {
+  let text = '', index = 0, previous = null;
+  tokens.forEach(token => {
+    switch (token.type) {
+      case MORSE_CODEPOINT:
+        let char = decodeCodePoint(token.value);
+        text += char;
+        previous = char;
+        break;
+      case MORSE_WORD_SEPARATOR:
+        text += ' ';
+        break;
+    }
+  });
   
+  // make punctuation stick to the left character
+  text = text.replace(/\s+([.,])/g, '$1');
+  
+  return text;
+}
+
+function isCodePointPart(char) {
+  return CODEPOINT_TESTER.test(char);
 }
 
 
@@ -162,8 +229,12 @@ module.exports = {
   decode,
   tokenizeCipher,
   deobfuscate,
+  decodeCodePoint,
   reconstructText,
   // types
   WORD,
-  PUNCTUATION
+  PUNCTUATION,
+  MORSE_CODEPOINT,
+  MORSE_CHARACTER_SEPARATOR,
+  MORSE_WORD_SEPARATOR
 };
