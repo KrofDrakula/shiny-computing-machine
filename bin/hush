@@ -25,7 +25,7 @@ process.stdin.on('readable', onStdInReadable);
 process.stdin.on('end', onStdInEnd);
 
 function onStdInReadable() {
-  var chunk = process.stdin.read();
+  let chunk = process.stdin.read();
   if (chunk !== null)
     console.log(chunk);
 }
