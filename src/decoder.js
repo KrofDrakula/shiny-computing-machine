@@ -1,10 +1,6 @@
-var dictionary       = require('./dictionary'),
-    SYMBOLS          = require('./symbols'),
-    DOTS_MATCHER     = /\.+/g,
-    DASHES_MATCHER   = /-+/g,
-    NUMBER_MATCHER   = /[1-6]/g,        // the largest Morse code point is 6 characters long
-    LETTER_MATCHER   = /[a-f]/gi,       // same here
-    CODEPOINT_TESTER = /^[1-6a-f.-]$/i;
+var dictionary = require('./dictionary'),
+    SYMBOLS    = require('./symbols'),
+    MATCHERS   = require('./matchers');
 
 
 //             ____                     _ _             
@@ -68,8 +64,8 @@ function tokenizeCipher(cipher, wordSeparator = SYMBOLS.WORD_SEPARATOR, charSepa
 // deobfuscates a single Morse code point
 function deobfuscate(morseChar) {
   let result = morseChar
-    .replace(NUMBER_MATCHER, numberToDots)
-    .replace(LETTER_MATCHER, letterToDashes)
+    .replace(MATCHERS.NUMBER, numberToDots)
+    .replace(MATCHERS.LETTER, letterToDashes)
     .replace(/[^.-]/g, '');
   return result;
 
@@ -108,7 +104,7 @@ function reconstructText(tokens) {
 }
 
 function isCodePointPart(char) {
-  return CODEPOINT_TESTER.test(char);
+  return MATCHERS.CODEPOINT_PART.test(char);
 }
 
 

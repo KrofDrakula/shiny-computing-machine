@@ -1,10 +1,7 @@
-var dictionary       = require('./dictionary'),
-    SYMBOLS          = require('./symbols'),
-    DOTS_MATCHER     = /\.+/g,
-    DASHES_MATCHER   = /-+/g,
-    NUMBER_MATCHER   = /[1-6]/g,        // the largest Morse code point is 6 characters long
-    LETTER_MATCHER   = /[a-f]/gi,       // same here
-    CODEPOINT_TESTER = /^[1-6a-f.-]$/i;
+var dictionary = require('./dictionary'),
+    SYMBOLS    = require('./symbols'),
+    MATCHERS   = require('./matchers');
+
 
 //         _____                     _ _             
 //        | ____|_ __   ___ ___   __| (_)_ __   __ _ 
@@ -90,8 +87,8 @@ function encodeWord(word, separator, useObfuscation = false) {
 // obfuscates the Morse code point using run length encoding
 function obfuscate(morseChar) {
   let result = morseChar
-    .replace(DOTS_MATCHER, dotsToSymbol)
-    .replace(DASHES_MATCHER, dashesToSymbol);
+    .replace(MATCHERS.DOTS, dotsToSymbol)
+    .replace(MATCHERS.DASHES, dashesToSymbol);
   return result;
   
   // sequential dots are encoded using numerals
