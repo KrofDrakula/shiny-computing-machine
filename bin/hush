@@ -1,0 +1,43 @@
+#!/usr/bin/env node
+
+var fs      = require('fs'),
+    path    = require('path'),
+    program = require('commander'),
+    flatten = require('../src/flatten'),
+    about = `  (づ ￣ ³￣)づ   Ⓗ Ⓤ Ⓢ Ⓗ
+
+  FLAPPY LIPS SINK SPACESHIPS!`;
+
+program
+  .description(about)
+  .option('-d, --decode', 'Decode a message')
+  .parse(process.argv);
+
+if (program.decode) {
+  
+} else {
+  
+}
+
+// configure and set up listeners for STDIN
+process.stdin.setEncoding('utf8');
+process.stdin.on('readable', onStdInReadable);
+process.stdin.on('end', onStdInEnd);
+
+function onStdInReadable() {
+  var chunk = process.stdin.read();
+  if (chunk !== null)
+    console.log(chunk);
+}
+
+function onStdInEnd() {
+  endProgram();
+}
+
+function endProgram(error) {
+  if (error) {
+    console.error(error);
+    process.exit(1);
+  }
+  process.exit(0);
+}
