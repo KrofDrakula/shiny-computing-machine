@@ -129,10 +129,12 @@ function tokenizeCipher(cipher) {
   
 }
 
+// deobfuscates a single Morse code point
 function deobfuscate(morseChar) {
   let result = morseChar
     .replace(NUMBER_MATCHER, numberToDots)
-    .replace(LETTER_MATCHER, letterToDashes);
+    .replace(LETTER_MATCHER, letterToDashes)
+    .replace(/[^-.]/g, '');
   return result;
 
   function numberToDots(number) {
@@ -140,7 +142,7 @@ function deobfuscate(morseChar) {
   }
   
   function letterToDashes(letter) {
-    return '-'.repeat(letter.codePointAt(0) - 64);
+    return '-'.repeat(letter.toUpperCase().codePointAt(0) - 64);
   }
 }
 

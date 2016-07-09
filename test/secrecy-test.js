@@ -118,6 +118,14 @@ describe('@secrecy', () => {
       expect(result).to.equal('.-..--');
     });
     
+    it('should handle mixed-mode obfuscation', () => {
+      expect(secrecy.deobfuscate('1A---2B')).to.equal('.----..--');
+    });
+    
+    it('should eliminate invalid characters', () => {
+      expect(secrecy.deobfuscate('%%-.c4$')).to.equal('-.---....');
+    });
+    
   });
   
 });
