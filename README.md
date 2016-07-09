@@ -76,3 +76,9 @@ Try this:
 ```bash
 cat sample/cry-for-help.txt | bin/hush | bin/hush -d
 ```
+
+Or maybe you'd like to try your hand and steganography?
+
+```bash
+cat sample/steganography | bin/hush -d
+```
