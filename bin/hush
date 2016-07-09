@@ -20,22 +20,24 @@ process.stdin.on('readable', onStdInReadable);
 process.stdin.on('end', onStdInEnd);
 
 
-function processChunk(data) {
+function processData(data) {
   if (program.decode) {
     endProgram('Not implemented!');
   } else {
-    console.log(secrecy.encode(data, !!program.obfuscate));
+    console.log(encode(data, !!program.obfuscate));
     endProgram();
   }
 }
 
+var data = '';
 function onStdInReadable() {
   let chunk = process.stdin.read();
   if (chunk !== null)
-    console.log(chunk);
+    data += chunk;
 }
 
 function onStdInEnd() {
+  processData(data);
   endProgram();
 }
 
