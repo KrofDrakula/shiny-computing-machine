@@ -4,7 +4,19 @@ var dictionary          = require('./dictionary'),
     CHARACTER_SEPARATOR = '|',
     WORD_SEPARATOR      = '/',
     DOTS_MATCHER        = /\.+/g,
-    DASHES_MATCHER      = /-+/g;
+    DASHES_MATCHER      = /-+/g,
+    NUMBER_MATCHER      = /[0-9]/g,
+    LETTER_MATCHER      = /[a-z]/gi;
+
+
+
+
+//         _____                     _ _             
+//        | ____|_ __   ___ ___   __| (_)_ __   __ _ 
+//        |  _| | '_ \ / __/ _ \ / _` | | '_ \ / _` |
+//        | |___| | | | (_| (_) | (_| | | | | | (_| |
+//        |_____|_| |_|\___\___/ \__,_|_|_| |_|\__, |
+//                                             |___/ 
 
 
 // this function takes plaintext and outputs the cipher;
@@ -69,6 +81,7 @@ function createCipherStream(tokens, useObfuscation = false, wordSeparator = WORD
   return codeStream.join('');
 }
 
+// encodes a single word into its cipher text, optionally obfuscating
 function encodeWord(word, separator, useObfuscation = false) {
   let ret = [];
   for (let char of word) {
@@ -80,11 +93,22 @@ function encodeWord(word, separator, useObfuscation = false) {
   return ret.join(separator);
 }
 
+// obfuscates the Morse code point using run length encoding
 function obfuscate(morseChar) {
   let result = morseChar
-    .replace(DOTS_MATCHER, match => match.length)
-    .replace(DASHES_MATCHER, match => String.fromCharCode(64 + match.length));
+    .replace(DOTS_MATCHER, dotsToSymbol)
+    .replace(DASHES_MATCHER, dashesToSymbol);
   return result;
+  
+  // sequential dots are encoded using numerals
+  function dotsToSymbol(dots) {
+    return dots.length.toString();
+  }
+
+  // sequential dashes are encoded using letters, starting with A (65)
+  function dashesToSymbol(dashes) {
+    return String.fromCharCode(64 + dashes.length);
+  }
 }
 
 module.exports = {
