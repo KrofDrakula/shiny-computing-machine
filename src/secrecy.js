@@ -5,7 +5,7 @@ var dictionary          = require('./dictionary'),
     WORD_SEPARATOR      = '/',
     DOTS_MATCHER        = /\.+/g,
     DASHES_MATCHER      = /-+/g,
-    NUMBER_MATCHER      = /[0-9]/g,
+    NUMBER_MATCHER      = /[1-9]/g,
     LETTER_MATCHER      = /[a-z]/gi;
 
 
@@ -130,7 +130,18 @@ function tokenizeCipher(cipher) {
 }
 
 function deobfuscate(morseChar) {
+  let result = morseChar
+    .replace(NUMBER_MATCHER, numberToDots)
+    .replace(LETTER_MATCHER, letterToDashes);
+  return result;
+
+  function numberToDots(number) {
+    return '.'.repeat(~~number);
+  }
   
+  function letterToDashes(letter) {
+    return '-'.repeat(letter.codePointAt(0) - 64);
+  }
 }
 
 function reconstructText(tokens) {

@@ -103,9 +103,19 @@ describe('@secrecy', () => {
   describe('#encode', () => {
     
     it('should match the given challenge example', () => {
-      let input = 'HELLO\nI AM IN TROUBLE',
+      let input  = 'HELLO\nI AM IN TROUBLE',
           output = '4|1|1A2|1A2|C\n2/1A|B/2|A1/A|1A1|C|2A|A3|1A2|1';
       expect(secrecy.encode(input, true)).to.equal(output);
+    });
+    
+  });
+  
+  
+  describe('#deobfuscate', () => {
+    
+    it('should expand numbers and letters into respective symbols', () => {
+      let result = secrecy.deobfuscate('1A2B');
+      expect(result).to.equal('.-..--');
     });
     
   });
