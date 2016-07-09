@@ -12,14 +12,13 @@ To use the `flatten` function, you can use `require()` it directly:
 
 ```js
 var flatten = require('./src/flatten.js');
-
 console.log(flatten([1,[2, [3]], 4]));
 ```
 
 To use on JSON data via CLI, use the `flattenize` script:
 
 ```bash
-cat <file> | bin/flattenize
+cat file.json | bin/flattenize
 ```
 
 Use `--help` or `--about` for command-line usage.
