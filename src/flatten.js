@@ -1,6 +1,6 @@
-function flatten(arr) {
+function flatten(input) {
   
-  if (!Array.isArray(arr))
+  if (!Array.isArray(input))
     throw new Error('Cannot flatten a non-array object!');
   
   let ret = [];
@@ -11,12 +11,14 @@ function flatten(arr) {
   // CAVEAT: depending on the amount of nesting, this function
   //         might cause a stack overflow; would have to
   //         refactor if that is a potential concern
-  arr.forEach(element => {
-    let subelements = [];
+  input.forEach(element => {
+    let subelements;
+    
     if (Array.isArray(element))
       subelements = flatten(element);
     else
       subelements = [element];
+    
     subelements.forEach(item => ret.push(item));
   });
   

@@ -28,8 +28,11 @@ describe('#flatten', () => {
   });
   
   it('should throw exception if not passed an array', () => {
-    let input = 'throw up';
-    expect(() => flatten(input)).to.throw(Error);
+    expect(() => flatten()).to.throw(Error);
+    expect(() => flatten('throw up')).to.throw(Error);
+    expect(() => flatten(1)).to.throw(Error);
+    expect(() => flatten(null)).to.throw(Error);
+    expect(() => flatten({})).to.throw(Error);
   });
   
 });
