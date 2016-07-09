@@ -119,12 +119,12 @@ describe('@secrecy', () => {
   describe('#deobfuscate', () => {
     
     it('should expand numbers and letters into respective symbols', () => {
-      let result = secrecy.deobfuscate('1A2B');
+      let result = secrecy.deobfuscate('1a2B');
       expect(result).to.equal('.-..--');
     });
     
     it('should handle mixed-mode obfuscation', () => {
-      expect(secrecy.deobfuscate('1A---2B')).to.equal('.----..--');
+      expect(secrecy.deobfuscate('1A---2b')).to.equal('.----..--');
     });
     
     it('should eliminate invalid characters', () => {
@@ -148,14 +148,14 @@ describe('@secrecy', () => {
     
     it('should correctly tokenize a multicharacter word', () => {
       let result = secrecy.tokenizeCipher('.-|-...'),
-          codePoints = result.map(item => item.value);
-      expect(codePoints).to.eql(['.-', '|','-...']);
+          tokens = result.map(item => item.value);
+      expect(tokens).to.eql(['.-', '|','-...']);
     });
     
     it('should correctly tokenize a multiword cipher', () => {
       let result = secrecy.tokenizeCipher('.-|-.../-.-.|-..'),
-          codePoints = result.map(item => item.value);
-      expect(codePoints).to.eql([
+          tokens = result.map(item => item.value);
+      expect(tokens).to.eql([
         '.-',
         '|',
         '-...',
@@ -168,8 +168,17 @@ describe('@secrecy', () => {
     
     it('should ignore all non-cipher characters', () => {
       let result = secrecy.tokenizeCipher('.~-|-#.@.$.'),
-          codePoints = result.map(item => item.value);
-      expect(codePoints).to.eql(['.-', '|', '-...']);
+          tokens = result.map(item => item.value);
+      expect(tokens).to.eql(['.-', '|', '-...']);
+    });
+    
+    it('should tokenize HELLO WORLD correctly', () => {
+      let result = secrecy.tokenizeCipher('4|1|1A2|1a2|C/.--|---|.-.|.-..|-..'),
+          tokens = result.map(item => item.value);
+      expect(tokens.length).to.equal(19);
+      expect(tokens[1]).to.equal('|');
+      expect(tokens[4]).to.equal('.-..');
+      expect(tokens[18]).to.equal('-..');
     });
     
   });
@@ -215,6 +224,14 @@ describe('@secrecy', () => {
           ];
       
       expect(secrecy.reconstructText(tokens)).to.equal('A. B');
+    });
+    
+  });
+  
+  describe('#decode', () => {
+    
+    it('should be able to decode the reference example', () => {
+      expect(secrecy.decode('4|1|1A2|1A2|C\n2/1A|B/2|A1/A|1A1|C|2A|A3|1A2|1')).to.equal('HELLO\nI AM IN TROUBLE');
     });
     
   });

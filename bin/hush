@@ -4,6 +4,7 @@ var fs      = require('fs'),
     path    = require('path'),
     program = require('commander'),
     encode  = require('../src/secrecy').encode,
+    decode  = require('../src/secrecy').decode,
     about   = `  (づ ￣ ³￣)づ   Ⓗ Ⓤ Ⓢ Ⓗ
 
   FLAPPY LIPS SINK SPACESHIPS!`;
@@ -22,9 +23,10 @@ process.stdin.on('end', onStdInEnd);
 
 function processData(data) {
   if (program.decode) {
-    endProgram('Not implemented!');
+    process.stdout.write(decode(data));
+    endProgram();
   } else {
-    console.log(encode(data, !!program.obfuscate));
+    process.stdout.write(encode(data, !!program.obfuscate));
     endProgram();
   }
 }

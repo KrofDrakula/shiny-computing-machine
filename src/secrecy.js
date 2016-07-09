@@ -125,7 +125,11 @@ function obfuscate(morseChar) {
 //                                                |___/ 
 
 function decode(cipherText) {
+  let lines = cipherText.split('\n'),
+      tokenizedLines = lines.map(line => tokenizeCipher(line)),
+      reconstructedLines = tokenizedLines.map(line => reconstructText(line));
   
+  return reconstructedLines.join('\n');
 }
 
 function tokenizeCipher(cipher, wordSeparator = WORD_SEPARATOR, charSeparator = CHARACTER_SEPARATOR) {
@@ -176,7 +180,7 @@ function deobfuscate(morseChar) {
   let result = morseChar
     .replace(NUMBER_MATCHER, numberToDots)
     .replace(LETTER_MATCHER, letterToDashes)
-    .replace(/[^-.]/g, '');
+    .replace(/[^.-]/g, '');
   return result;
 
   function numberToDots(number) {
@@ -193,7 +197,7 @@ function decodeCodePoint(codePoint) {
 }
 
 function reconstructText(tokens) {
-  let text = '', index = 0, previous = null;
+  let text = '';
   tokens.forEach(token => {
     switch (token.type) {
       case MORSE_CODEPOINT:
