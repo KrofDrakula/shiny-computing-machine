@@ -23,6 +23,8 @@ tests as documentation for each of the functions.
 
 ### Flatten
 
+![](http://media.giphy.com/media/QfPdIVqn41bag/giphy.gif)
+
 To use the `flatten` function, you can use `require()` it directly:
 
 ```js
