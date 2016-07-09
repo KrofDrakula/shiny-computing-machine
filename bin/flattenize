@@ -5,9 +5,16 @@ var fs      = require('fs'),
     program = require('commander'),
     flatten = require('../src/flatten'),
     about = `
-        ( ^-^)_旦 CAN HAZ PANCAEKS?
+  __________________
+ /                  \\
+|   PANCAEK FOR U!   |
+ \\_____ ____________/
+       ˇ
+    ( ^-^)_旦
 
-Pipe me some JSON and I'll flatten it for you!`;
+Pipe me some JSON, sit back, relax, and I'll flatten it for you!
+
+Use --help for usage info.`;
 
 program
   .option('-a, --about', 'Show the about screen')
