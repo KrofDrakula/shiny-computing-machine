@@ -6,6 +6,21 @@ This repo contains the solutions to the code challenges.
 
 Both solutions are presented as JS functions and CLI commands.
 
+After checking out, install the dependencies:
+
+```bash
+npm install
+```
+
+To run the suite of tests:
+
+```bash
+npm test
+```
+
+The tests are located in the `/test` directory and contain BDD-style
+tests as documentation for each of the functions.
+
 ### Flatten
 
 To use the `flatten` function, you can use `require()` it directly:
