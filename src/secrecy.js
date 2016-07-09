@@ -111,12 +111,46 @@ function obfuscate(morseChar) {
   }
 }
 
+
+
+
+//             ____                     _ _             
+//            |  _ \  ___  ___ ___   __| (_)_ __   __ _ 
+//            | | | |/ _ \/ __/ _ \ / _` | | '_ \ / _` |
+//            | |_| |  __/ (_| (_) | (_| | | | | | (_| |
+//            |____/ \___|\___\___/ \__,_|_|_| |_|\__, |
+//                                                |___/ 
+
+function decode(cipherText) {
+  
+}
+
+function tokenizeCipher(cipher) {
+  
+}
+
+function deobfuscate(morseChar) {
+  
+}
+
+function reconstructText(tokens) {
+  
+}
+
+
 module.exports = {
+  // encoding
   encode,
   tokenizePlaintext,
   createCipherStream,
   encodeWord,
   obfuscate,
+  // decoding
+  decode,
+  tokenizeCipher,
+  deobfuscate,
+  reconstructText,
+  // types
   WORD,
   PUNCTUATION
 };
