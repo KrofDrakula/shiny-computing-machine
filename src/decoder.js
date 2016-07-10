@@ -40,9 +40,11 @@ function tokenize(cipher, wordSeparator = SYMBOLS.WORD_SEPARATOR, charSeparator 
       continue;
     }
     
+    // no need to push a character separator as a token here,
+    // as they only serve to group code points; we just need
+    // to emit the code point and move on
     if (char == charSeparator) {
       commitCodePoint();
-      tokens.push({ type: SYMBOLS.MORSE_CHARACTER_SEPARATOR, value: charSeparator });
       index++;
       continue;
     }

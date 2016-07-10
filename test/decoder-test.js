@@ -37,7 +37,7 @@ describe('@decoder', () => {
     it('should correctly tokenize a multicharacter word', () => {
       let result = decoder.tokenize('.-|-...'),
           tokens = result.map(item => item.value);
-      expect(tokens).to.eql(['.-', '|','-...']);
+      expect(tokens).to.eql(['.-', '-...']);
     });
     
     it('should correctly tokenize a multiword cipher', () => {
@@ -45,11 +45,9 @@ describe('@decoder', () => {
           tokens = result.map(item => item.value);
       expect(tokens).to.eql([
         '.-',
-        '|',
         '-...',
         '/',
         '-.-.',
-        '|',
         '-..'
       ]);
     });
@@ -57,16 +55,16 @@ describe('@decoder', () => {
     it('should ignore all non-cipher characters', () => {
       let result = decoder.tokenize('.~-|-#.@.$.'),
           tokens = result.map(item => item.value);
-      expect(tokens).to.eql(['.-', '|', '-...']);
+      expect(tokens).to.eql(['.-', '-...']);
     });
     
     it('should tokenize HELLO WORLD correctly', () => {
       let result = decoder.tokenize('4|1|1A2|1a2|C/.--|---|.-.|.-..|-..'),
           tokens = result.map(item => item.value);
-      expect(tokens.length).to.equal(19);
-      expect(tokens[1]).to.equal('|');
-      expect(tokens[4]).to.equal('.-..');
-      expect(tokens[18]).to.equal('-..');
+      expect(tokens.length).to.equal(11);
+      expect(tokens[1]).to.equal('.');
+      expect(tokens[3]).to.equal('.-..');
+      expect(tokens[10]).to.equal('-..');
     });
     
   });
@@ -85,7 +83,6 @@ describe('@decoder', () => {
     it('should reconstruct multicharacter words', () => {
       let tokens = [
             { type: SYMBOLS.MORSE_CODEPOINT, value: '.-' },
-            { type: SYMBOLS.MORSE_CHARACTER_SEPARATOR, value: '|' },
             { type: SYMBOLS.MORSE_CODEPOINT, value: '-...' }
           ];
       
