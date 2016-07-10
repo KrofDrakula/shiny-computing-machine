@@ -77,11 +77,11 @@ describe('@encoder', () => {
     
   });
   
-  describe('#createCipherStream', () => {
+  describe('#createCipherText', () => {
     
     it('should generate a single word from a single token', () => {
       let tokens = [{ type: SYMBOLS.WORD, value: 'AB' }],
-          result = encoder.createCipherStream(tokens, false);
+          result = encoder.createCipherText(tokens, false);
       expect(result).to.equal('.-|-...');
     });
     
@@ -90,7 +90,7 @@ describe('@encoder', () => {
             { type: SYMBOLS.WORD, value: 'A' },
             { type: SYMBOLS.WORD, value: 'B' }
           ],
-          result = encoder.createCipherStream(tokens, false);
+          result = encoder.createCipherText(tokens, false);
       expect(result).to.equal('.-/-...');
     });
     
@@ -100,7 +100,7 @@ describe('@encoder', () => {
             { type: SYMBOLS.PUNCTUATION, value: ',' },
             { type: SYMBOLS.WORD, value: 'B' }
           ],
-          result = encoder.createCipherStream(tokens, false);
+          result = encoder.createCipherText(tokens, false);
       expect(result).to.equal('.-/--..--/-...');
     });
     
