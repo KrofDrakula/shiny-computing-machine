@@ -92,7 +92,7 @@ function reconstructText(tokens) {
         previous = char;
         break;
       case SYMBOLS.MORSE_WORD_SEPARATOR:
-        if (previous.type !== SYMBOLS.MORSE_WORD_SEPARATOR)
+        if (previous.type === SYMBOLS.MORSE_CODEPOINT)
           text += ' ';
         break;
     }
