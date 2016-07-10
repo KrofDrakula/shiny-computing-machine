@@ -13,6 +13,7 @@ program
   .description(about)
   .option('-o, --obfuscate', 'Use obfuscation when encoding')
   .option('-d, --decode', 'Decode a message')
+  .option('-s, --suppress-empty-lines', 'Do not output empty lines when decoding a message')
   .parse(process.argv);
 
 // configure and set up listeners for STDIN
@@ -23,7 +24,10 @@ process.stdin.on('end', onStdInEnd);
 
 function processData(data) {
   if (program.decode) {
-    process.stdout.write(decode(data));
+    let decoded = decode(data);
+    if (program.suppressEmptyLines)
+      decoded = decoded.replace(/\n+/g, '\n').replace(/^\n/g, '');
+    process.stdout.write(decoded);
     endProgram();
   } else {
     process.stdout.write(encode(data, !!program.obfuscate));
