@@ -62,17 +62,17 @@ function tokenize(plaintext) {
 
 // takes a stream of tokens and generates the cipher stream
 function createCipherStream(tokens, useObfuscation = false, wordSeparator = SYMBOLS.WORD_SEPARATOR, charSeparator = SYMBOLS.CHARACTER_SEPARATOR) {
-  let codeStream = [], previous = null;
+  let codeStream = '', previous = null;
   tokens.forEach(token => {
     // if there was a word in the stream before the current
     // one, we have to put a word separator in between
     if (previous)
-      codeStream.push(wordSeparator);
+      codeStream += wordSeparator;
     
-    codeStream.push(encodeWord(token.value, charSeparator, useObfuscation));
+    codeStream += encodeWord(token.value, charSeparator, useObfuscation);
     previous = token;
   });
-  return codeStream.join('');
+  return codeStream;
 }
 
 // encodes a single word into its cipher text, optionally obfuscating
