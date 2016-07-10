@@ -31,19 +31,19 @@ describe('@encoder', () => {
     
   });
   
-  describe('#tokenizePlaintext', () => {
+  describe('#tokenize', () => {
     
     it('should return an empty array of tokens on empty string', () => {
-      expect(encoder.tokenizePlaintext('')).to.eql([]);
+      expect(encoder.tokenize('')).to.eql([]);
     });
     
     it('should tokenize a single letter', () => {
-      let result = encoder.tokenizePlaintext('a');
+      let result = encoder.tokenize('a');
       expect(result.length).to.equal(1);
     });
     
     it('should return a single token per word', () => {
-      let result = encoder.tokenizePlaintext('HELLO WORLD');
+      let result = encoder.tokenize('HELLO WORLD');
       expect(result[0].type).to.equal(SYMBOLS.WORD);
       expect(result[0].value).to.equal('HELLO');
       expect(result[1].type).to.equal(SYMBOLS.WORD);
@@ -51,18 +51,18 @@ describe('@encoder', () => {
     });
     
     it('should treat unbroken strings of letters and numbers as a single word', () => {
-      let result = encoder.tokenizePlaintext('ALPHA1337');
+      let result = encoder.tokenize('ALPHA1337');
       expect(result.length).to.equal(1);
       expect(result[0].value).to.equal('ALPHA1337');
     });
     
     it('should treat punctuation as separate tokens', () => {
-      let result = encoder.tokenizePlaintext('A,B');
+      let result = encoder.tokenize('A,B');
       expect(result.length).to.equal(3);
     });
     
     it('should ignore unknown characters and whitespace, except for word separation', () => {
-      let result = encoder.tokenizePlaintext('  this     is!some wêìñđö T3xt  .   '),
+      let result = encoder.tokenize('  this     is!some wêìñđö T3xt  .   '),
           words  = result.map(token => token.value);
       
       expect(words).to.eql([

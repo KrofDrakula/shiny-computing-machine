@@ -15,18 +15,18 @@ var dictionary = require('./dictionary'),
 // each line is treated as a separate cipher stream
 function encode(text, useObfuscation = false) {
   let lines          = text.split('\n'),
-      tokenizedLines = lines.map(line => tokenizePlaintext(line)),
+      tokenizedLines = lines.map(line => tokenize(line)),
       cipherStreams  = tokenizedLines.map(tokens => createCipherStream(tokens, useObfuscation));
   return cipherStreams.join('\n');
 }
 
 
 // takes a single line's text and tokenizes it for the encoder
-function tokenizePlaintext(text) {
+function tokenize(plaintext) {
   let tokens = [], index = 0;
   
-  while(index < text.length) {
-    let char = text[index];
+  while(index < plaintext.length) {
+    let char = plaintext[index];
     
     // handle alphanumeric words
     if (dictionary.isAlphanumeric(char)) {
@@ -34,7 +34,7 @@ function tokenizePlaintext(text) {
       // keep adding characters to the word until we reach the end of the word
       while(dictionary.isAlphanumeric(char)) {
         word += char;
-        char = text[++index];
+        char = plaintext[++index];
       }
       tokens.push({ type: SYMBOLS.WORD, value: word.toUpperCase() });
       continue;
@@ -64,8 +64,11 @@ function tokenizePlaintext(text) {
 function createCipherStream(tokens, useObfuscation = false, wordSeparator = SYMBOLS.WORD_SEPARATOR, charSeparator = SYMBOLS.CHARACTER_SEPARATOR) {
   let codeStream = [], previous = null;
   tokens.forEach(token => {
+    // if there was a word in the stream before the current
+    // one, we have to put a word separator in between
     if (previous)
       codeStream.push(wordSeparator);
+    
     codeStream.push(encodeWord(token.value, charSeparator, useObfuscation));
     previous = token;
   });
@@ -102,4 +105,4 @@ function obfuscate(morseChar) {
   }
 }
 
-module.exports = { encode, tokenizePlaintext, createCipherStream, encodeWord, obfuscate };
+module.exports = { encode, tokenize, createCipherStream, encodeWord, obfuscate };
