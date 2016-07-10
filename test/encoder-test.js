@@ -4,6 +4,33 @@ var encoder = require('../src/encoder'),
 
 describe('@encoder', () => {
   
+  describe('#encodeWord', () => {
+    
+    it('should encode a word into valid Morse code', () => {
+      let result = encoder.encodeWord('TROUBLE', '|');
+      expect(result).to.equal('-|.-.|---|..-|-...|.-..|.');
+    });
+    
+  });
+  
+  describe('#obfuscate', () => {
+    
+    it('should replace dots with numbers', () => {
+      expect(encoder.obfuscate('....')).to.equal('4');
+      expect(encoder.obfuscate('.')).to.equal('1');
+    });
+    
+    it('should replace dashes with letters', () => {
+      expect(encoder.obfuscate('---')).to.equal('C');
+      expect(encoder.obfuscate('--')).to.equal('B');
+    });
+    
+    it('should handle a combination of letters and numbers', () => {
+      expect(encoder.obfuscate('.-...--')).to.equal('1A3B');
+    });
+    
+  });
+  
   describe('#tokenizePlaintext', () => {
     
     it('should return an empty array of tokens on empty string', () => {
@@ -46,33 +73,6 @@ describe('@encoder', () => {
         'T3XT',   // letters and numbers are words
         '.'       // commas and periods are OK
       ]);
-    });
-    
-  });
-  
-  describe('#obfuscate', () => {
-    
-    it('should replace dots with numbers', () => {
-      expect(encoder.obfuscate('....')).to.equal('4');
-      expect(encoder.obfuscate('.')).to.equal('1');
-    });
-    
-    it('should replace dashes with letters', () => {
-      expect(encoder.obfuscate('---')).to.equal('C');
-      expect(encoder.obfuscate('--')).to.equal('B');
-    });
-    
-    it('should handle a combination of letters and numbers', () => {
-      expect(encoder.obfuscate('.-...--')).to.equal('1A3B');
-    });
-    
-  });
-  
-  describe('#encodeWord', () => {
-    
-    it('should encode a word into valid Morse code', () => {
-      let result = encoder.encodeWord('TROUBLE', '|');
-      expect(result).to.equal('-|.-.|---|..-|-...|.-..|.');
     });
     
   });
