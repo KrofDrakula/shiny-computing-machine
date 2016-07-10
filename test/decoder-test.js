@@ -103,6 +103,7 @@ describe('@decoder', () => {
     });
     
     it('should decode punctuation with words', () => {
+      // ".-/.-.-.-/-..."
       let tokens = [
             { type: SYMBOLS.MORSE_CODEPOINT, value: '.-' },
             { type: SYMBOLS.MORSE_WORD_SEPARATOR, value: '/' },
@@ -112,6 +113,20 @@ describe('@decoder', () => {
           ];
       
       expect(decoder.reconstructText(tokens)).to.equal('A. B');
+    });
+    
+    it('should collapse multiple word separators', () => {
+      // ".-////-..."
+      let tokens = [
+            { type: SYMBOLS.MORSE_CODEPOINT, value: '.-' },
+            { type: SYMBOLS.MORSE_WORD_SEPARATOR, value: '/' },
+            { type: SYMBOLS.MORSE_WORD_SEPARATOR, value: '/' },
+            { type: SYMBOLS.MORSE_WORD_SEPARATOR, value: '/' },
+            { type: SYMBOLS.MORSE_WORD_SEPARATOR, value: '/' },
+            { type: SYMBOLS.MORSE_CODEPOINT, value: '-...' }
+          ];
+      
+      expect(decoder.reconstructText(tokens)).to.equal('A B');
     });
     
   });

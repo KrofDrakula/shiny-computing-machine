@@ -83,7 +83,7 @@ function decodeCodePoint(codePoint) {
 }
 
 function reconstructText(tokens) {
-  let text = '';
+  let text = '', previous = null;
   tokens.forEach(token => {
     switch (token.type) {
       case SYMBOLS.MORSE_CODEPOINT:
@@ -92,9 +92,11 @@ function reconstructText(tokens) {
         previous = char;
         break;
       case SYMBOLS.MORSE_WORD_SEPARATOR:
-        text += ' ';
+        if (previous.type !== SYMBOLS.MORSE_WORD_SEPARATOR)
+          text += ' ';
         break;
     }
+    previous = token;
   });
   
   // make punctuation stick to the left character
