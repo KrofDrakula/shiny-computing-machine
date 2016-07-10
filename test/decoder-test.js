@@ -122,6 +122,10 @@ describe('@decoder', () => {
       expect(decoder.decode('4|1|1A2|1A2|C\n2/1A|B/2|A1/A|1A1|C|2A|A3|1A2|1')).to.equal('HELLO\nI AM IN TROUBLE');
     });
     
+    it('should ignore invalid Morse code points', () => {
+      expect(decoder.decode('---------------|.|-')).to.equal('ET');
+    });
+    
   });
   
 });
