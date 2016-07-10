@@ -24,10 +24,7 @@ process.stdin.on('end', onStdInEnd);
 
 function processData(data) {
   if (program.decode) {
-    let decoded = decode(data);
-    if (program.suppressEmptyLines)
-      decoded = decoded.replace(/\n+/g, '\n').replace(/^\n/g, '');
-    process.stdout.write(decoded);
+    process.stdout.write(decode(data, !!program.suppressEmptyLines));
     endProgram();
   } else {
     process.stdout.write(encode(data, !!program.obfuscate));

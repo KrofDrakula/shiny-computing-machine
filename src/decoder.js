@@ -10,10 +10,16 @@ var dictionary = require('./dictionary'),
 //            |____/ \___|\___\___/ \__,_|_|_| |_|\__, |
 //                                                |___/ 
 
-function decode(cipherText) {
+
+// decodes multiline cipher text and returns the
+// reconstructed text as a string
+function decode(cipherText, stripEmptyLines = false) {
   let lines = cipherText.split('\n'),
       tokenizedLines = lines.map(line => tokenize(line)),
       reconstructedLines = tokenizedLines.map(line => reconstructText(line));
+  
+  if (stripEmptyLines)
+    reconstructedLines = reconstructedLines.filter(line => line.length > 0);
   
   return reconstructedLines.join('\n');
 }
