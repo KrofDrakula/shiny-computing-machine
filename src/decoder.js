@@ -25,6 +25,7 @@ function decode(cipherText, stripEmptyLines = false) {
   return reconstructedLines.join('\n');
 }
 
+// tokenizes a line of cipher text into Morse code points and word separators
 function tokenize(cipher, wordSeparator = SYMBOLS.WORD_SEPARATOR, charSeparator = SYMBOLS.CHARACTER_SEPARATOR) {
   let tokens = [], index = 0, codePoint = '';
   
@@ -46,6 +47,8 @@ function tokenize(cipher, wordSeparator = SYMBOLS.WORD_SEPARATOR, charSeparator 
       continue;
     }
     
+    // instead of just emitting the code point, we must insert
+    // a word separator between code points
     if (char == wordSeparator) {
       commitCodePoint();
       tokens.push({ type: SYMBOLS.MORSE_WORD_SEPARATOR, value: wordSeparator });
@@ -61,6 +64,8 @@ function tokenize(cipher, wordSeparator = SYMBOLS.WORD_SEPARATOR, charSeparator 
   
   return tokens;
   
+  // a convenience function that emits a code point based
+  // on the code point parts collected so far
   function commitCodePoint() {
     if (codePoint)
       tokens.push({ type: SYMBOLS.MORSE_CODEPOINT, value: codePoint });
@@ -68,7 +73,10 @@ function tokenize(cipher, wordSeparator = SYMBOLS.WORD_SEPARATOR, charSeparator 
   }
 }
 
-// deobfuscates a single Morse code point
+// deobfuscates a single obfuscated Morse code point into its
+// proper Morse code point; it doesn't validate the resulting
+// code point and removes all non-Morse characters from the
+// sequence
 function deobfuscate(morseChar) {
   let result = morseChar
     .replace(MATCHERS.NUMBER, numberToDots)
@@ -76,29 +84,40 @@ function deobfuscate(morseChar) {
     .replace(/[^.-]/g, '');
   return result;
 
+  // simple coercion from numbers to sequences of dots (1 = ., 2 = .., etc.)
   function numberToDots(number) {
     return '.'.repeat(~~number);
   }
   
+  // use the ASCII value of the letter to determine repeat count (A ~ 65 = -, B ~ 66 = --, etc.)
   function letterToDashes(letter) {
     return '-'.repeat(letter.toUpperCase().codePointAt(0) - 64);
   }
 }
 
+// translates a single code point to a plaintext character;
+// returns empty string when the code point is invalid
 function decodeCodePoint(codePoint) {
   return dictionary.reverseMap.has(codePoint) ? dictionary.reverseMap.get(codePoint) : '';
 }
 
+// takes a list of tokens and reconstructs the original message
+// with simple stylistic rules:
+//   - no leading space before punctuation
+//   - single trailing space after punctuation
+//   - no leading/trailing/duplicated whitespace
 function reconstructText(tokens) {
   let text = '', previous = null;
   tokens.forEach(token => {
     switch (token.type) {
       case SYMBOLS.MORSE_CODEPOINT:
+        // a code point can be emitted directly into the text
         let char = decodeCodePoint(token.value);
         text += char;
         previous = char;
         break;
       case SYMBOLS.MORSE_WORD_SEPARATOR:
+        // only insert a space if preceded by a code point
         if (previous && previous.type === SYMBOLS.MORSE_CODEPOINT)
           text += ' ';
         break;
@@ -106,13 +125,16 @@ function reconstructText(tokens) {
     previous = token;
   });
   
-  // make punctuation stick to the left character and remove
+  
   // trailing spaces
-  text = text.replace(/\s+([.,])/g, '$1').replace(/\s+$/, '');
+  text = text
+    .replace(/\s+([.,])/g, '$1') // remove leading spaces before punctuation
+    .replace(/\s+$/, '');        // remove trailing spaces
   
   return text;
 }
 
+// identifies a character as a valid code point part
 function isCodePointPart(char) {
   return MATCHERS.CODEPOINT_PART.test(char);
 }
