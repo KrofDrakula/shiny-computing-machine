@@ -92,15 +92,16 @@ function reconstructText(tokens) {
         previous = char;
         break;
       case SYMBOLS.MORSE_WORD_SEPARATOR:
-        if (previous.type === SYMBOLS.MORSE_CODEPOINT)
+        if (previous && previous.type === SYMBOLS.MORSE_CODEPOINT)
           text += ' ';
         break;
     }
     previous = token;
   });
   
-  // make punctuation stick to the left character
-  text = text.replace(/\s+([.,])/g, '$1');
+  // make punctuation stick to the left character and remove
+  // trailing spaces
+  text = text.replace(/\s+([.,])/g, '$1').replace(/\s+$/, '');
   
   return text;
 }

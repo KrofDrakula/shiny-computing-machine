@@ -129,6 +129,34 @@ describe('@decoder', () => {
       expect(decoder.reconstructText(tokens)).to.equal('A B');
     });
     
+    it('should not introduce leading space', () => {
+      // "////.-|-..."
+      let tokens = [
+            { type: SYMBOLS.MORSE_WORD_SEPARATOR, value: '/' },
+            { type: SYMBOLS.MORSE_WORD_SEPARATOR, value: '/' },
+            { type: SYMBOLS.MORSE_WORD_SEPARATOR, value: '/' },
+            { type: SYMBOLS.MORSE_WORD_SEPARATOR, value: '/' },
+            { type: SYMBOLS.MORSE_CODEPOINT, value: '.-' },
+            { type: SYMBOLS.MORSE_CODEPOINT, value: '-...' }
+          ];
+      
+      expect(decoder.reconstructText(tokens)).to.equal('AB');
+    });
+    
+    it('should not introduce trailing space', () => {
+      // ".-|-...////"
+      let tokens = [
+            { type: SYMBOLS.MORSE_CODEPOINT, value: '.-' },
+            { type: SYMBOLS.MORSE_CODEPOINT, value: '-...' },
+            { type: SYMBOLS.MORSE_WORD_SEPARATOR, value: '/' },
+            { type: SYMBOLS.MORSE_WORD_SEPARATOR, value: '/' },
+            { type: SYMBOLS.MORSE_WORD_SEPARATOR, value: '/' },
+            { type: SYMBOLS.MORSE_WORD_SEPARATOR, value: '/' }
+          ];
+      
+      expect(decoder.reconstructText(tokens)).to.equal('AB');
+    });
+    
   });
   
   describe('#decode', () => {
