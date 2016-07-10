@@ -21,27 +21,27 @@ describe('@decoder', () => {
     
   });
   
-  describe('#tokenizeCipher', () => {
+  describe('#tokenize', () => {
     
     it('should return an empty array for an empty cipher', () => {
-      expect(decoder.tokenizeCipher('')).to.eql([]);
+      expect(decoder.tokenize('')).to.eql([]);
     });
     
     it('should correctly tokenize a single character', () => {
-      let result = decoder.tokenizeCipher('.');
+      let result = decoder.tokenize('.');
       expect(result.length).to.equal(1);
       expect(result[0].type).to.equal(SYMBOLS.MORSE_CODEPOINT);
       expect(result[0].value).to.equal('.');
     });
     
     it('should correctly tokenize a multicharacter word', () => {
-      let result = decoder.tokenizeCipher('.-|-...'),
+      let result = decoder.tokenize('.-|-...'),
           tokens = result.map(item => item.value);
       expect(tokens).to.eql(['.-', '|','-...']);
     });
     
     it('should correctly tokenize a multiword cipher', () => {
-      let result = decoder.tokenizeCipher('.-|-.../-.-.|-..'),
+      let result = decoder.tokenize('.-|-.../-.-.|-..'),
           tokens = result.map(item => item.value);
       expect(tokens).to.eql([
         '.-',
@@ -55,13 +55,13 @@ describe('@decoder', () => {
     });
     
     it('should ignore all non-cipher characters', () => {
-      let result = decoder.tokenizeCipher('.~-|-#.@.$.'),
+      let result = decoder.tokenize('.~-|-#.@.$.'),
           tokens = result.map(item => item.value);
       expect(tokens).to.eql(['.-', '|', '-...']);
     });
     
     it('should tokenize HELLO WORLD correctly', () => {
-      let result = decoder.tokenizeCipher('4|1|1A2|1a2|C/.--|---|.-.|.-..|-..'),
+      let result = decoder.tokenize('4|1|1A2|1a2|C/.--|---|.-.|.-..|-..'),
           tokens = result.map(item => item.value);
       expect(tokens.length).to.equal(19);
       expect(tokens[1]).to.equal('|');

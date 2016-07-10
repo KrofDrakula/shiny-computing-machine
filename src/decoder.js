@@ -12,13 +12,13 @@ var dictionary = require('./dictionary'),
 
 function decode(cipherText) {
   let lines = cipherText.split('\n'),
-      tokenizedLines = lines.map(line => tokenizeCipher(line)),
+      tokenizedLines = lines.map(line => tokenize(line)),
       reconstructedLines = tokenizedLines.map(line => reconstructText(line));
   
   return reconstructedLines.join('\n');
 }
 
-function tokenizeCipher(cipher, wordSeparator = SYMBOLS.WORD_SEPARATOR, charSeparator = SYMBOLS.CHARACTER_SEPARATOR) {
+function tokenize(cipher, wordSeparator = SYMBOLS.WORD_SEPARATOR, charSeparator = SYMBOLS.CHARACTER_SEPARATOR) {
   let tokens = [], index = 0, codePoint = '';
   
   while(index < cipher.length) {
@@ -108,4 +108,4 @@ function isCodePointPart(char) {
 }
 
 
-module.exports = { decode, tokenizeCipher, deobfuscate, reconstructText };
+module.exports = { decode, tokenize, deobfuscate, reconstructText };
