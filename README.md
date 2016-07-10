@@ -45,7 +45,7 @@ Use `--help` or `--about` for command-line usage.
 
 ### Secrecy
 
-![](https://i.imgur.com/OZPQZww.gif)
+![](http://i.imgur.com/R9WnseD.gif)
 
 To encode a message, use the `hush` script:
 
