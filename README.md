@@ -82,3 +82,11 @@ Or maybe you'd like to try your hand at steganography?
 ```bash
 cat sample/steganography | bin/hush -ds
 ```
+
+## Credits
+
+Massive props go to [James Kyle](https://github.com/thejameskyle)
+for his [marvelous talk](https://www.youtube.com/watch?v=Tar4WgAfMr4)
+on [The Super Tiny Compiler](https://github.com/thejameskyle/the-super-tiny-compiler).
+I've always wanted to write a compiler and interpreter for months
+after hearing the talk, and this was the perfect chance.
