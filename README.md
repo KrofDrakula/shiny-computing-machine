@@ -28,7 +28,7 @@ tests as documentation for each of the functions.
 
 ![](http://media.giphy.com/media/QfPdIVqn41bag/giphy.gif)
 
-To use the `flatten` function, you can use `require()` it directly:
+To use the `flatten` function, you can `require()` it directly:
 
 ```js
 var flatten = require('./src/flatten.js');
