@@ -1,3 +1,5 @@
+// the function takes an arbitrarily nested array and
+// flattens it into a singular array of elements
 function flatten(input) {
   
   if (!Array.isArray(input))
