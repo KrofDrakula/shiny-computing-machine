@@ -80,7 +80,7 @@ cat sample/cry-for-help.txt | bin/hush | bin/hush -d
 Or maybe you'd like to try your hand at steganography?
 
 ```bash
-cat sample/steganography | bin/hush -ds
+cat sample/steganography.txt | bin/hush -ds
 ```
 
 ## Credits
