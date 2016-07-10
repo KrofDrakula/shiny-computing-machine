@@ -63,7 +63,7 @@ function tokenize(plaintext) {
 // takes a stream of tokens and generates the cipher stream
 function createCipherText(tokens, useObfuscation = false, wordSeparator = SYMBOLS.WORD_SEPARATOR, charSeparator = SYMBOLS.CHARACTER_SEPARATOR) {
   let cipherText = '', previous = null;
-  // produces a cipher text
+  // produces the cipher text one word at a time
   tokens.forEach(token => {
     // if there was a word in the stream before the current
     // one, we have to put a word separator in between
@@ -79,12 +79,14 @@ function createCipherText(tokens, useObfuscation = false, wordSeparator = SYMBOL
 // encodes a single word into its cipher text, optionally obfuscating
 function encodeWord(word, separator, useObfuscation = false) {
   let ret = [];
+  // step through each letter, encode and obfuscate to build word
   for (let char of word) {
     let encoded = dictionary.forwardMap.get(char);
     if (useObfuscation)
       encoded = obfuscate(encoded);
     ret.push(encoded);
   }
+  // join individual Morse code points with separator
   return ret.join(separator);
 }
 
@@ -95,12 +97,12 @@ function obfuscate(morseChar) {
     .replace(MATCHERS.DASHES, dashesToSymbol);
   return result;
   
-  // sequential dots are encoded using numerals
+  // sequential dots are encoded using numerals (1 = ., 2 = .., etc.)
   function dotsToSymbol(dots) {
     return dots.length.toString();
   }
 
-  // sequential dashes are encoded using letters, starting with A (65)
+  // sequential dashes are encoded using letters, starting with A (A = -, B = --, etc.)
   function dashesToSymbol(dashes) {
     return String.fromCharCode(64 + dashes.length);
   }
