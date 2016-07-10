@@ -1,3 +1,5 @@
+// this is a registry of symbols to signify different
+// types of tokens within streams
 module.exports = {
   WORD                      : Symbol('WORD'),
   PUNCTUATION               : Symbol('PUNCTUATION'),
