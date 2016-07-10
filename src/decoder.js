@@ -12,7 +12,8 @@ var dictionary = require('./dictionary'),
 
 
 // decodes multiline cipher text and returns the
-// reconstructed text as a string
+// reconstructed text as a string, optionally stripping
+// empty lines from the decoded output
 function decode(cipherText, stripEmptyLines = false) {
   let lines = cipherText.split('\n'),
       tokenizedLines = lines.map(line => tokenize(line)),
