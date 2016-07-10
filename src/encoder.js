@@ -11,7 +11,7 @@ var dictionary = require('./dictionary'),
 //                                             |___/ 
 
 
-// this function takes plaintext and outputs the cipher;
+// this function takes multiline plaintext and outputs the ciphertext;
 // each line is treated as a separate cipher stream
 function encode(text, useObfuscation = false) {
   let lines          = text.split('\n'),
