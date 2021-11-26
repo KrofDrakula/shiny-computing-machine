@@ -64,7 +64,7 @@ To decode the message, you can use the `hush -d` command:
 cat encodedMessage.txt | bin/hush --decode
 
 # optional: output to a file
-cat encodedMessage.txt | bin/unhush -d > decodedMessage.txt
+cat encodedMessage.txt | bin/hush -d > decodedMessage.txt
 ```
 
 ### BONUS SHOT
